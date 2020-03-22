@@ -10,20 +10,20 @@ module.exports = {
         filename: 'main.js',
         path: join(__dirname, 'dist'),
     },
-    devServer : {
-        port : 9999,
-        hot : true,
-        open : true,
-        historyApiFallback : true,
+    devServer: {
+        port: 9999,
+        hot: true,
+        open: true,
+        historyApiFallback: true,
     },
-    module : {
+    module: {
         rules: [
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
                     presets: ['@babel/reset-env'],
-                }
+                },
             },
             {
                 test: /\.js$/,
@@ -48,6 +48,6 @@ module.exports = {
             title: 'Project Pomodoro',
             favicon: join(__dirname, 'favicon.png'),
             template: join(__dirname, 'index.html'),
-        })
+        }),
     ],
 };
