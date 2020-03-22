@@ -44,7 +44,9 @@ module.exports = {
         new VueLoaderPlugin(),
         new HTMLWebpackPlugin({
             showErrors: true,
+            inject: true,
             title: 'Project Pomodoro',
+            favicon: join(__dirname, 'favicon.png'),
             template: join(__dirname, 'index.html'),
         })
     ],
