@@ -17,7 +17,6 @@ module.exports = {
         "error",
         "always-multiline"
     ],
-
     'vue/html-indent' : ['error', 4],
     "vue/html-closing-bracket-newline": ["error", {
         "singleline": "never",
