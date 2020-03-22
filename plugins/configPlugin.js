@@ -3,6 +3,7 @@ const config = {
     STROKE_WIDTH: 10,
     GREEN: '#66BB6A',
     GRAY: '#424242',
+    TEMP_TIMER_TIME: 60,
 };
 
 export default {
