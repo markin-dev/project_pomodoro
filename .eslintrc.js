@@ -25,5 +25,12 @@ module.exports = {
     'vue/max-attributes-per-line': 'error',
     "vue/singleline-html-element-content-newline" : 0,
     'newline-after-var': 0,
+    'max-len': ['error', 120, 2, {
+      ignoreUrls: true,
+      ignoreComments: false,
+      ignoreRegExpLiterals: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }],
   }
 };
