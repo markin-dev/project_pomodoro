@@ -24,5 +24,6 @@ module.exports = {
     }],
     'vue/max-attributes-per-line': 'error',
     "vue/singleline-html-element-content-newline" : 0,
+    'newline-after-var': 0,
   }
 };
