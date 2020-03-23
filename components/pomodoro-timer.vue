@@ -1,23 +1,23 @@
 <template>
-    <div id="app">
+    <div>
         <svg
             class="timer"
-            :height="this.$getConfig('TIMER_SIZE')"
-            :width="this.$getConfig('TIMER_SIZE')"
+            :height="$getConfig('TIMER_SIZE')"
+            :width="$getConfig('TIMER_SIZE')"
         >
             <circle
-                :stroke-width="this.$getConfig('STROKE_WIDTH')"
+                :stroke-width="$getConfig('STROKE_WIDTH')"
                 :r="circleRadius"
-                :cx="this.$getConfig('TIMER_SIZE') / 2"
-                :cy="this.$getConfig('TIMER_SIZE') / 2"
+                :cx="$getConfig('TIMER_SIZE') / 2"
+                :cy="$getConfig('TIMER_SIZE') / 2"
                 :stroke="$getConfig('GRAY')"
                 fill="transparent"
             />
             <circle
-                :stroke-width="this.$getConfig('STROKE_WIDTH')"
+                :stroke-width="$getConfig('STROKE_WIDTH')"
                 :r="circleRadius"
-                :cx="this.$getConfig('TIMER_SIZE') / 2"
-                :cy="this.$getConfig('TIMER_SIZE') / 2"
+                :cx="$getConfig('TIMER_SIZE') / 2"
+                :cy="$getConfig('TIMER_SIZE') / 2"
                 :stroke="$getConfig('GREEN')"
                 :style="circleStyles"
                 class="timer__progress-circle"
