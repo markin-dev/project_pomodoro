@@ -114,11 +114,11 @@ export default {
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.35s;
-    user-select: none;
 }
 
 .timer__countdown {
     font-family: 'Roboto', sans-serif;
     font-size: 60px;
+    user-select: none;
 }
 </style>
