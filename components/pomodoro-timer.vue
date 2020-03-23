@@ -33,6 +33,13 @@
             >
                 {{ `${formattedTime}` }}
             </text>
+            <circle
+                :r="circleRadius + $getConfig('STROKE_WIDTH') / 2"
+                :cx="$getConfig('TIMER_SIZE') / 2"
+                :cy="$getConfig('TIMER_SIZE') / 2"
+                fill="transparent"
+                @click="changeState"
+            />
         </svg>
     </div>
 </template>
@@ -48,7 +55,7 @@ export default {
 
     computed: {
         circleRadius() {
-            return this.$getConfig('TIMER_SIZE') / 2 - this.$getConfig('STROKE_WIDTH') * 2;
+            return (this.$getConfig('TIMER_SIZE') - this.$getConfig('STROKE_WIDTH')) / 2;
         },
 
         circumference() {
@@ -94,6 +101,10 @@ export default {
                 }
             }, 1000);
         },
+
+        changeState() {
+            console.log('CLICKED');
+        },
     },
 };
 </script>
@@ -103,6 +114,7 @@ export default {
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.35s;
+    user-select: none;
 }
 
 .timer__countdown {
