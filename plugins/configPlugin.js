@@ -4,6 +4,10 @@ const config = {
     GREEN: '#66BB6A',
     GRAY: '#424242',
     TEMP_TIMER_TIME: 60,
+    TIMER_STATUSES: {
+        stopped: 'stopped',
+        running: 'runnig',
+    },
 };
 
 export default {

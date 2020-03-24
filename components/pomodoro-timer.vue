@@ -39,7 +39,7 @@
                 :cy="$getConfig('TIMER_SIZE') / 2"
                 class="timer__clickable-circle"
                 fill="transparent"
-                @click="changeState"
+                @click="timerStatus == $getConfig('TIMER_STATUSES').stopped ? startTimer() : stopTimer()"
             />
         </svg>
     </div>
@@ -49,8 +49,10 @@
 export default {
     data() {
         return {
+            timerID: null,
             timerTime: this.$getConfig('TEMP_TIMER_TIME'),
             progressCircleFillPercent: 0,
+            timerStatus: this.$getConfig('TIMER_STATUSES').stopped,
         };
     },
 
@@ -86,19 +88,27 @@ export default {
         },
     },
 
-    mounted() {
-        this.countdown();
-    },
-
     methods: {
+        startTimer() {
+            this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
+            this.countdown();
+        },
+
+        stopTimer() {
+            this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
+            this.timerTime = this.$getConfig('TEMP_TIMER_TIME');
+            this.progressCircleFillPercent = 0;
+            clearInterval(this.timerID);
+        },
+
         countdown() {
             const initTimerTime = this.timerTime;
-            const cd = setInterval(() => {
+            this.timerID = setInterval(() => {
                 this.timerTime -= 1;
                 this.progressCircleFillPercent = (initTimerTime - this.timerTime) / initTimerTime;
 
                 if (this.timerTime <= 0) {
-                    clearInterval(cd);
+                    clearInterval(this.timerID);
                 }
             }, 1000);
         },
