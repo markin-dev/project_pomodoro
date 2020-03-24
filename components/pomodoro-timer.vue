@@ -37,6 +37,7 @@
                 :r="circleRadius + $getConfig('STROKE_WIDTH') / 2"
                 :cx="$getConfig('TIMER_SIZE') / 2"
                 :cy="$getConfig('TIMER_SIZE') / 2"
+                class="timer__clickable-circle"
                 fill="transparent"
                 @click="changeState"
             />
@@ -110,15 +111,21 @@ export default {
 </script>
 
 <style lang="less">
-.timer__progress-circle {
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-    transition: stroke-dashoffset 0.35s;
-}
+.timer {
+    &__progress-circle {
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+        transition: stroke-dashoffset 0.35s;
+    }
 
-.timer__countdown {
-    font-family: 'Roboto', sans-serif;
-    font-size: 60px;
-    user-select: none;
+    &__countdown {
+        font-family: 'Roboto', sans-serif;
+        font-size: 60px;
+        user-select: none;
+    }
+
+    &__clickable-circle {
+        cursor: pointer;
+    }
 }
 </style>
