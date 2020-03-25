@@ -41,12 +41,25 @@
                 fill="transparent"
                 @click="timerStatus == $getConfig('TIMER_STATUSES').stopped ? startTimer() : stopTimer()"
             />
+            <startButton
+                v-if="timerStatus == $getConfig('TIMER_STATUSES').stopped"
+                :radius="circleRadius + $getConfig('STROKE_WIDTH') / 2"
+                :color="$getConfig('GREEN')"
+                :hover-color="$getConfig('LIGHT_GREEN')"
+                @click="startTimer"
+            />
         </svg>
     </div>
 </template>
 
 <script>
+import startButton from './start-button.vue';
+
 export default {
+    components: {
+        startButton,
+    },
+
     data() {
         return {
             timerID: null,
@@ -136,6 +149,10 @@ export default {
 
     &__clickable-circle {
         cursor: pointer;
+
+        &_type_work:hover {
+            fill: #81c784;
+        }
     }
 }
 </style>
