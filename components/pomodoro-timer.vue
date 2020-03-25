@@ -43,8 +43,9 @@
             />
             <startButton
                 v-if="timerStatus == $getConfig('TIMER_STATUSES').stopped"
-                :timer-status="timerStatus"
                 :radius="circleRadius + $getConfig('STROKE_WIDTH') / 2"
+                :color="$getConfig('GREEN')"
+                :hover-color="$getConfig('LIGHT_GREEN')"
                 @click="startTimer"
             />
         </svg>

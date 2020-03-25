@@ -2,13 +2,15 @@
     <svg
         class="start-button"
         @click="$emit('click')"
+        @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"
     >
         <circle
             :r="radius"
             :cx="$getConfig('TIMER_SIZE') / 2"
             :cy="$getConfig('TIMER_SIZE') / 2"
-            :fill="$getConfig('GREEN')"
-            class="start-button_type_work"
+            :fill="color"
+            :class="['start-button_type_work', {'start-button_type_hovered': isHovered}]"
         />
         <svg
             :width="$getConfig('TIMER_SIZE') * 0.4"
@@ -28,9 +30,26 @@
 
 <script>
 export default {
-    props: [
-        'radius',
-    ],
+    props: {
+        radius: {
+            type: Number,
+            required: true,
+        },
+        color: {
+            type: String,
+            required: true,
+        },
+        hoverColor: {
+            type: String,
+            required: true,
+        },
+    },
+
+    data() {
+        return {
+            isHovered: false,
+        };
+    },
 };
 </script>
 
@@ -38,7 +57,7 @@ export default {
 .start-button {
     cursor: pointer;
 
-    &_type_work:hover {
+    &_type_hovered {
         fill: #81c784;
     }
 }

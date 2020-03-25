@@ -2,6 +2,7 @@ const config = {
     TIMER_SIZE: 220,
     STROKE_WIDTH: 10,
     GREEN: '#66BB6A',
+    LIGHT_GREEN: '#81C784',
     GRAY: '#424242',
     TEMP_TIMER_TIME: 60,
     TIMER_STATUSES: {
