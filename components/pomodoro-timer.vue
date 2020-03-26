@@ -30,6 +30,7 @@
                 text-anchor="middle"
                 dominant-baseline="middle"
                 :fill="`${timerTypes[currentTimerType].color}`"
+                :style="{fontSize: `${$getConfig('TIMER_SIZE') * 0.27}px`}"
             >
                 {{ `${formattedTime}` }}
             </text>
@@ -173,7 +174,6 @@ export default {
 
     &__countdown {
         font-family: 'Roboto', sans-serif;
-        font-size: 60px;
         user-select: none;
     }
 
