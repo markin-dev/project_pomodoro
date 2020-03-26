@@ -9,6 +9,7 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: join(__dirname, 'dist'),
+        publicPath: '/assets/',
     },
     devServer: {
         port: 9999,
@@ -18,6 +19,10 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.mp3$/,
+                loader: 'file-loader',
+            },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
@@ -46,7 +51,7 @@ module.exports = {
             showErrors: true,
             inject: true,
             title: 'Project Pomodoro',
-            favicon: join(__dirname, 'favicon.png'),
+            favicon: join(__dirname, 'assets/favicon.png'),
             template: join(__dirname, 'index.html'),
         }),
     ],

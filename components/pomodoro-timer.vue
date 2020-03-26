@@ -122,11 +122,14 @@ export default {
         },
 
         stopTimer() {
+            const audioAlert = new Audio('/assets/alert.mp3');
+
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
             this.timerSeconds = 0;
             this.progressCircleFillPercent = 0;
             this.toggleTimerType();
             clearInterval(this.timerID);
+            audioAlert.play();
         },
 
         countdown() {
