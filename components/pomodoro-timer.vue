@@ -69,12 +69,12 @@ export default {
             currentTimerType: 'work',
             timerTypes: {
                 work: {
-                    time: this.$getConfig('WORK_TIMER_TIME'),
+                    time: this.$getConfig('WORK_TIMER_MINUTES'),
                     color: this.$getConfig('BLUE'),
                     hoverColor: this.$getConfig('LIGHT_BLUE'),
                 },
                 relax: {
-                    time: this.$getConfig('RELAX_TIMER_TIME'),
+                    time: this.$getConfig('RELAX_TIMER_MINUTES'),
                     color: this.$getConfig('GREEN'),
                     hoverColor: this.$getConfig('LIGHT_GREEN'),
                 },
@@ -116,14 +116,14 @@ export default {
 
     methods: {
         startTimer() {
-            this.timerTime = this.timerTypes[this.currentTimerType].time;
+            this.timerTime = this.timerTypes[this.currentTimerType].time * 60;
             this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
             this.countdown();
         },
 
         stopTimer() {
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
-            this.timerTime = this.$getConfig('TEMP_TIMER_TIME');
+            this.timerTime = 0;
             this.progressCircleFillPercent = 0;
             this.toggleTimerType();
             clearInterval(this.timerID);
