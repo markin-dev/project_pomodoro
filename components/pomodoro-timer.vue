@@ -136,7 +136,7 @@ export default {
                 this.progressCircleFillPercent = (initTimerTime - this.timerTime) / initTimerTime;
 
                 if (this.timerTime <= 0) {
-                    clearInterval(this.timerID);
+                    this.stopTimer();
                 }
             }, 1000);
         },
