@@ -63,18 +63,18 @@ export default {
     data() {
         return {
             timerID: null,
-            timerTime: 0,
+            timerSeconds: 0,
             progressCircleFillPercent: 0,
             timerStatus: this.$getConfig('TIMER_STATUSES').stopped,
             currentTimerType: 'work',
             timerTypes: {
                 work: {
-                    time: this.$getConfig('WORK_TIMER_MINUTES'),
+                    time: this.$getConfig('WORK_TIMER_SECONDS'),
                     color: this.$getConfig('BLUE'),
                     hoverColor: this.$getConfig('LIGHT_BLUE'),
                 },
                 relax: {
-                    time: this.$getConfig('RELAX_TIMER_MINUTES'),
+                    time: this.$getConfig('RELAX_TIMER_SECONDS'),
                     color: this.$getConfig('GREEN'),
                     hoverColor: this.$getConfig('LIGHT_GREEN'),
                 },
@@ -99,8 +99,8 @@ export default {
         },
 
         formattedTime() {
-            let minutes = parseInt(this.timerTime / 60, 10);
-            let seconds = parseInt(this.timerTime % 60, 10);
+            let minutes = parseInt(this.timerSeconds / 60, 10);
+            let seconds = parseInt(this.timerSeconds % 60, 10);
 
             minutes = minutes < 10
                 ? `0${minutes}`
@@ -116,29 +116,44 @@ export default {
 
     methods: {
         startTimer() {
-            this.timerTime = this.timerTypes[this.currentTimerType].time * 60;
             this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
             this.countdown();
         },
 
         stopTimer() {
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
-            this.timerTime = 0;
+            this.timerSeconds = 0;
             this.progressCircleFillPercent = 0;
             this.toggleTimerType();
             clearInterval(this.timerID);
         },
 
         countdown() {
-            const initTimerTime = this.timerTime;
-            this.timerID = setInterval(() => {
-                this.timerTime -= 1;
-                this.progressCircleFillPercent = (initTimerTime - this.timerTime) / initTimerTime;
+            let now = new Date();
 
-                if (this.timerTime <= 0) {
+            this.timerSeconds = this.timerTypes[this.currentTimerType].time;
+
+            const deadline = this.addSeconds(now, this.timerSeconds);
+            const initTimerSeconds = this.timeDiffInSec(now, deadline);
+
+            this.timerID = setInterval(() => {
+                now = new Date();
+                this.timerSeconds = this.timeDiffInSec(now, deadline);
+
+                this.progressCircleFillPercent = (initTimerSeconds - this.timerSeconds) / initTimerSeconds;
+
+                if (this.timerSeconds <= 0) {
                     this.stopTimer();
                 }
             }, 1000);
+        },
+
+        addSeconds(date, seconds) {
+            return new Date(date.getTime() + seconds * 1000);
+        },
+
+        timeDiffInSec(startDate, endDate) {
+            return (Date.parse(endDate) - Date.parse(startDate)) / 1000;
         },
 
         toggleTimerType() {
