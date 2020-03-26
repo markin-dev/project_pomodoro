@@ -18,7 +18,7 @@
                 :r="circleRadius"
                 :cx="$getConfig('TIMER_SIZE') / 2"
                 :cy="$getConfig('TIMER_SIZE') / 2"
-                :stroke="$getConfig('GREEN')"
+                :stroke="timerTypes[currentTimerType].color"
                 :style="circleStyles"
                 class="timer__progress-circle"
                 fill="transparent"
@@ -29,7 +29,7 @@
                 class="timer__countdown"
                 text-anchor="middle"
                 dominant-baseline="middle"
-                :fill="`${$getConfig('GREEN')}`"
+                :fill="`${timerTypes[currentTimerType].color}`"
             >
                 {{ `${formattedTime}` }}
             </text>
@@ -44,8 +44,8 @@
             <startButton
                 v-if="timerStatus == $getConfig('TIMER_STATUSES').stopped"
                 :radius="circleRadius + $getConfig('STROKE_WIDTH') / 2"
-                :color="$getConfig('GREEN')"
-                :hover-color="$getConfig('LIGHT_GREEN')"
+                :color="timerTypes[currentTimerType].color"
+                :hover-color="timerTypes[currentTimerType].hoverColor"
                 @click="startTimer"
             />
         </svg>
@@ -63,9 +63,22 @@ export default {
     data() {
         return {
             timerID: null,
-            timerTime: this.$getConfig('TEMP_TIMER_TIME'),
+            timerTime: 0,
             progressCircleFillPercent: 0,
             timerStatus: this.$getConfig('TIMER_STATUSES').stopped,
+            currentTimerType: 'work',
+            timerTypes: {
+                work: {
+                    time: this.$getConfig('WORK_TIMER_TIME'),
+                    color: this.$getConfig('BLUE'),
+                    hoverColor: this.$getConfig('LIGHT_BLUE'),
+                },
+                relax: {
+                    time: this.$getConfig('RELAX_TIMER_TIME'),
+                    color: this.$getConfig('GREEN'),
+                    hoverColor: this.$getConfig('LIGHT_GREEN'),
+                },
+            },
         };
     },
 
@@ -103,6 +116,7 @@ export default {
 
     methods: {
         startTimer() {
+            this.timerTime = this.timerTypes[this.currentTimerType].time;
             this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
             this.countdown();
         },
@@ -111,6 +125,7 @@ export default {
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
             this.timerTime = this.$getConfig('TEMP_TIMER_TIME');
             this.progressCircleFillPercent = 0;
+            this.toggleTimerType();
             clearInterval(this.timerID);
         },
 
@@ -126,8 +141,8 @@ export default {
             }, 1000);
         },
 
-        changeState() {
-            console.log('CLICKED');
+        toggleTimerType() {
+            this.currentTimerType = this.currentTimerType === 'work' ? 'relax' : 'work';
         },
     },
 };

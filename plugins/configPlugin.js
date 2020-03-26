@@ -3,8 +3,11 @@ const config = {
     STROKE_WIDTH: 10,
     GREEN: '#66BB6A',
     LIGHT_GREEN: '#81C784',
+    BLUE: '#42A5F5',
+    LIGHT_BLUE: '#64B5F6',
     GRAY: '#424242',
-    TEMP_TIMER_TIME: 60,
+    WORK_TIMER_TIME: 1500,
+    RELAX_TIMER_TIME: 300,
     TIMER_STATUSES: {
         stopped: 'stopped',
         running: 'runnig',

@@ -10,7 +10,7 @@
             :cx="$getConfig('TIMER_SIZE') / 2"
             :cy="$getConfig('TIMER_SIZE') / 2"
             :fill="color"
-            :class="['start-button_type_work', {'start-button_type_hovered': isHovered}]"
+            :style="{fill: isHovered ? hoverColor : color}"
         />
         <svg
             :width="$getConfig('TIMER_SIZE') * 0.4"
@@ -56,9 +56,5 @@ export default {
 <style lang="less" scoped>
 .start-button {
     cursor: pointer;
-
-    &_type_hovered {
-        fill: #81c784;
-    }
 }
 </style>
