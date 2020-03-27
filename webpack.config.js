@@ -19,7 +19,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.mp3$/,
+                test: /\.(mp3|m4a)$/,
                 loader: 'file-loader',
             },
             {

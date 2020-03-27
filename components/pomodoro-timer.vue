@@ -50,16 +50,23 @@
                 @click="startTimer"
             />
         </svg>
+
+        <btn />
+        <btn />
+        <btn />
     </div>
 </template>
 
 <script>
 import startButton from './start-button.vue';
+import btn from './button.vue';
 import audioAlertPath from '../assets/alert.mp3';
+import piu from '../assets/piu.m4a';
 
 export default {
     components: {
         startButton,
+        btn,
     },
 
     data() {
@@ -123,7 +130,9 @@ export default {
         },
 
         stopTimer() {
-            const audioAlert = new Audio(audioAlertPath);
+            // const audioAlert = new Audio(audioAlertPath);
+
+            const audioAlert = new Audio(piu);
 
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
             this.timerSeconds = 0;
@@ -170,6 +179,8 @@ export default {
 
 <style lang="less">
 .timer {
+    user-select: none;
+
     &__progress-circle {
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
@@ -178,7 +189,7 @@ export default {
 
     &__countdown {
         font-family: 'Roboto', sans-serif;
-        user-select: none;
+        // user-select: none;
     }
 
     &__clickable-circle {
