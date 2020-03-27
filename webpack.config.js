@@ -9,7 +9,6 @@ module.exports = {
     output: {
         filename: 'main.js',
         path: join(__dirname, 'dist'),
-        publicPath: '/assets/',
     },
     devServer: {
         port: 9999,

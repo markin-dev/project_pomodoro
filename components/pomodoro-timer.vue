@@ -55,6 +55,7 @@
 
 <script>
 import startButton from './start-button.vue';
+import audioAlertPath from '../assets/alert.mp3';
 
 export default {
     components: {
@@ -122,7 +123,7 @@ export default {
         },
 
         stopTimer() {
-            const audioAlert = new Audio('/assets/alert.mp3');
+            const audioAlert = new Audio(audioAlertPath);
 
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
             this.timerSeconds = 0;
