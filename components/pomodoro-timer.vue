@@ -18,7 +18,7 @@
                 :r="circleRadius"
                 :cx="$getConfig('TIMER_SIZE') / 2"
                 :cy="$getConfig('TIMER_SIZE') / 2"
-                :stroke="$getConfig('GREEN')"
+                :stroke="timerTypes[currentTimerType].color"
                 :style="circleStyles"
                 class="timer__progress-circle"
                 fill="transparent"
@@ -29,7 +29,8 @@
                 class="timer__countdown"
                 text-anchor="middle"
                 dominant-baseline="middle"
-                :fill="`${$getConfig('GREEN')}`"
+                :fill="`${timerTypes[currentTimerType].color}`"
+                :style="{fontSize: `${$getConfig('TIMER_SIZE') * 0.27}px`}"
             >
                 {{ `${formattedTime}` }}
             </text>
@@ -44,8 +45,8 @@
             <startButton
                 v-if="timerStatus == $getConfig('TIMER_STATUSES').stopped"
                 :radius="circleRadius + $getConfig('STROKE_WIDTH') / 2"
-                :color="$getConfig('GREEN')"
-                :hover-color="$getConfig('LIGHT_GREEN')"
+                :color="timerTypes[currentTimerType].color"
+                :hover-color="timerTypes[currentTimerType].hoverColor"
                 @click="startTimer"
             />
         </svg>
@@ -63,9 +64,22 @@ export default {
     data() {
         return {
             timerID: null,
-            timerTime: this.$getConfig('TEMP_TIMER_TIME'),
+            timerSeconds: 0,
             progressCircleFillPercent: 0,
             timerStatus: this.$getConfig('TIMER_STATUSES').stopped,
+            currentTimerType: 'work',
+            timerTypes: {
+                work: {
+                    time: this.$getConfig('WORK_TIMER_SECONDS'),
+                    color: this.$getConfig('BLUE'),
+                    hoverColor: this.$getConfig('LIGHT_BLUE'),
+                },
+                relax: {
+                    time: this.$getConfig('RELAX_TIMER_SECONDS'),
+                    color: this.$getConfig('GREEN'),
+                    hoverColor: this.$getConfig('LIGHT_GREEN'),
+                },
+            },
         };
     },
 
@@ -86,8 +100,8 @@ export default {
         },
 
         formattedTime() {
-            let minutes = parseInt(this.timerTime / 60, 10);
-            let seconds = parseInt(this.timerTime % 60, 10);
+            let minutes = parseInt(this.timerSeconds / 60, 10);
+            let seconds = parseInt(this.timerSeconds % 60, 10);
 
             minutes = minutes < 10
                 ? `0${minutes}`
@@ -108,26 +122,46 @@ export default {
         },
 
         stopTimer() {
+            const audioAlert = new Audio('/assets/alert.mp3');
+
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
-            this.timerTime = this.$getConfig('TEMP_TIMER_TIME');
+            this.timerSeconds = 0;
             this.progressCircleFillPercent = 0;
+            this.toggleTimerType();
             clearInterval(this.timerID);
+            audioAlert.play();
         },
 
         countdown() {
-            const initTimerTime = this.timerTime;
-            this.timerID = setInterval(() => {
-                this.timerTime -= 1;
-                this.progressCircleFillPercent = (initTimerTime - this.timerTime) / initTimerTime;
+            let now = new Date();
 
-                if (this.timerTime <= 0) {
-                    clearInterval(this.timerID);
+            this.timerSeconds = this.timerTypes[this.currentTimerType].time;
+
+            const deadline = this.addSeconds(now, this.timerSeconds);
+            const initTimerSeconds = this.timeDiffInSec(now, deadline);
+
+            this.timerID = setInterval(() => {
+                now = new Date();
+                this.timerSeconds = this.timeDiffInSec(now, deadline);
+
+                this.progressCircleFillPercent = (initTimerSeconds - this.timerSeconds) / initTimerSeconds;
+
+                if (this.timerSeconds <= 0) {
+                    this.stopTimer();
                 }
             }, 1000);
         },
 
-        changeState() {
-            console.log('CLICKED');
+        addSeconds(date, seconds) {
+            return new Date(date.getTime() + seconds * 1000);
+        },
+
+        timeDiffInSec(startDate, endDate) {
+            return (Date.parse(endDate) - Date.parse(startDate)) / 1000;
+        },
+
+        toggleTimerType() {
+            this.currentTimerType = this.currentTimerType === 'work' ? 'relax' : 'work';
         },
     },
 };
@@ -143,7 +177,6 @@ export default {
 
     &__countdown {
         font-family: 'Roboto', sans-serif;
-        font-size: 60px;
         user-select: none;
     }
 
