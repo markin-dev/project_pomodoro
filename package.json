@@ -4,7 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:markin-dev/project_pomodoro.git",
   "scripts": {
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "test": "jest"
   },
   "author": "Sergey Markin <markin.dev@gmail.com>",
   "license": "MIT",
@@ -12,7 +13,10 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@vue/test-utils": "^1.0.0-beta.32",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.2.4",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
@@ -21,8 +25,11 @@
     "eslint-plugin-vue": "^6.2.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^25.2.4",
+    "jest-transform-stub": "^2.0.0",
     "less-loader": "^5.0.0",
     "style-loader": "^1.1.3",
+    "vue-jest": "^3.0.5",
     "vue-loader": "^15.9.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
@@ -33,5 +40,20 @@
   "dependencies": {
     "less": "^3.11.1",
     "vue": "^2.6.11"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.vue$": "vue-jest",
+      "^.+\\.(mp3)$": "jest-transform-stub"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ]
   }
 }

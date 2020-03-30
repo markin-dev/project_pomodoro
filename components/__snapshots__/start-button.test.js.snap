@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`start-button.vue has the expected html structure 1`] = `
+<svg
+  class="start-button"
+>
+  <circle
+    cx="110"
+    cy="110"
+    fill="#42A5F5"
+    r="220"
+    style="fill: #42A5F5;"
+  />
+   
+  <svg
+    fill="none"
+    height="88"
+    viewBox="0 0 69 88"
+    width="88"
+    x="74.80000000000001"
+    y="66"
+  >
+    <path
+      d="M0.92453 0.4151V87.1698L69 43.7925L0.92453 0.4151Z"
+      fill="#EEEEEE"
+    />
+  </svg>
+</svg>
+`;

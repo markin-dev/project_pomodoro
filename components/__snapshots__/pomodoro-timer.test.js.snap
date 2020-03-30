@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pomodoro-timer.vue has the expected html structure 1`] = `
+<div>
+  <svg
+    class="timer"
+    height="220"
+    width="220"
+  >
+    <circle
+      cx="110"
+      cy="110"
+      fill="transparent"
+      r="105"
+      stroke="#424242"
+      stroke-width="10"
+    />
+     
+    <circle
+      class="timer__progress-circle"
+      cx="110"
+      cy="110"
+      fill="transparent"
+      r="105"
+      stroke="#42A5F5"
+      stroke-width="10"
+      style="stroke-dashoffset: 659.7344572538566; stroke-dasharray: 659.7344572538566 659.7344572538566;"
+    />
+     
+    <text
+      class="timer__countdown"
+      dominant-baseline="middle"
+      fill="#42A5F5"
+      style="font-size: 59.400000000000006px;"
+      text-anchor="middle"
+      x="50%"
+      y="50%"
+    >
+      
+            00:00
+        
+    </text>
+     
+    <circle
+      class="timer__clickable-circle"
+      cx="110"
+      cy="110"
+      fill="transparent"
+      r="110"
+    />
+     
+    <startbutton-stub
+      color="#42A5F5"
+      hoverColor="#64B5F6"
+      radius="110"
+    />
+  </svg>
+</div>
+`;
