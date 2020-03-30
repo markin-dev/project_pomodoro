@@ -123,14 +123,11 @@ export default {
         },
 
         stopTimer() {
-            const audioAlert = new Audio(audioAlertPath);
-
             this.timerStatus = this.$getConfig('TIMER_STATUSES').stopped;
             this.timerSeconds = 0;
             this.progressCircleFillPercent = 0;
             this.toggleTimerType();
             clearInterval(this.timerID);
-            audioAlert.play();
         },
 
         countdown() {
@@ -149,6 +146,8 @@ export default {
 
                 if (this.timerSeconds <= 0) {
                     this.stopTimer();
+                    const audioAlert = new Audio(audioAlertPath);
+                    audioAlert.play();
                 }
             }, 1000);
         },
