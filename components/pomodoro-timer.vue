@@ -1,4 +1,5 @@
 <template>
+    <!-- передавать конфиги пропсами -->
     <div>
         <svg
             class="timer"
@@ -100,6 +101,7 @@ export default {
             };
         },
 
+        // попробовать сделать чере вьюшный фильтр
         formattedTime() {
             let minutes = parseInt(this.timerSeconds / 60, 10);
             let seconds = parseInt(this.timerSeconds % 60, 10);
@@ -130,6 +132,7 @@ export default {
             clearInterval(this.timerID);
         },
 
+        // подумать над названием метода, заглаголить
         countdown() {
             let now = new Date();
 
@@ -138,6 +141,7 @@ export default {
             const deadline = this.addSeconds(now, this.timerSeconds);
             const initTimerSeconds = this.timeDiffInSec(now, deadline);
 
+            // заменить на рекурсивный setTimeout
             this.timerID = setInterval(() => {
                 now = new Date();
                 this.timerSeconds = this.timeDiffInSec(now, deadline);
@@ -156,6 +160,7 @@ export default {
             return new Date(date.getTime() + seconds * 1000);
         },
 
+        // подумать над названием метода, заглаголить
         timeDiffInSec(startDate, endDate) {
             return (Date.parse(endDate) - Date.parse(startDate)) / 1000;
         },
@@ -182,10 +187,6 @@ export default {
 
     &__clickable-circle {
         cursor: pointer;
-
-        &_type_work:hover {
-            fill: #81c784;
-        }
     }
 }
 </style>

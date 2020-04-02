@@ -1,3 +1,7 @@
+// сгруппировать по семантике
+// work и relax тоже добавить в конфигы
+// не называть цвета цветами, называть по функционалу
+
 export const TIMER_SIZE = 220;
 export const STROKE_WIDTH = 10;
 export const GREEN = '#66BB6A';

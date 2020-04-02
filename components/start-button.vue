@@ -1,4 +1,6 @@
 <template>
+    <!-- сделать ховер враппер с прозрачностью, убрать mouseenter и mouseleave -->
+    <!-- передавать конфиги пропсами -->
     <svg
         class="start-button"
         @click="$emit('click')"
