@@ -85,6 +85,11 @@ export default {
         };
     },
 
+    mounted() {
+        chrome.alarms.create('project_pomodoro', {delayInMinutes: 0.05});
+        console.log( 'created!' );
+    },
+
     computed: {
         circleRadius() {
             return (this.$getConfig('TIMER_SIZE') - this.$getConfig('STROKE_WIDTH')) / 2;
@@ -122,6 +127,10 @@ export default {
         startTimer() {
             this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
             this.countdown();
+
+            chrome.alarms.getAll( ( alarms ) => {
+                console.log( alarms );
+            });
         },
 
         stopTimer() {
