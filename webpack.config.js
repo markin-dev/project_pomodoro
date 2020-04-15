@@ -2,6 +2,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { join } = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { HotModuleReplacementPlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -16,6 +17,7 @@ module.exports = {
         open: true,
         historyApiFallback: true,
     },
+
     module: {
         rules: [
             {
@@ -53,5 +55,11 @@ module.exports = {
             favicon: join(__dirname, 'assets/favicon.png'),
             template: join(__dirname, 'index.html'),
         }),
+        new CopyPlugin([
+            {
+                from: 'ext',
+                flatten: true,
+            },
+          ]),
     ],
 };
