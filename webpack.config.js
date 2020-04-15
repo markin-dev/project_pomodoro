@@ -6,9 +6,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: join(__dirname, 'app.js'),
+    entry: {
+        app: join(__dirname, 'app.js'),
+        background: join(__dirname, './ext/background.js'),
+    },
     output: {
-        filename: 'main.js',
+        filename: '[name].js',
         path: join(__dirname, 'dist'),
     },
     devServer: {
@@ -56,10 +59,8 @@ module.exports = {
             template: join(__dirname, 'index.html'),
         }),
         new CopyPlugin([
-            {
-                from: 'ext',
-                flatten: true,
-            },
-          ]),
+            {from: join(__dirname, 'ext/manifest.json')},
+            {from: join(__dirname, 'ext/popup.html')},
+        ]),
     ],
 };
