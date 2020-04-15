@@ -1,6 +1,6 @@
 <template>
     <!-- передавать конфиги пропсами -->
-    <div>
+    <div v-if="currentTimerType">
         <svg
             class="timer"
             :height="$getConfig('TIMER_SIZE')"
@@ -56,7 +56,6 @@
 
 <script>
 import startButton from './start-button.vue';
-import audioAlertPath from '../assets/alert.mp3';
 
 export default {
     components: {
@@ -85,8 +84,10 @@ export default {
             timerID: null,
             timerSeconds: 0,
             progressCircleFillPercent: 0,
+            isProgressCircleTransition: false,
             timerStatus: this.$getConfig('TIMER_STATUSES').stopped,
-            currentTimerType: 'work',
+            currentTimerType: null,
+            initTimerSeconds: 0,
             timerTypes: {
                 work: {
                     time: this.$getConfig('WORK_TIMER_SECONDS'),
@@ -102,11 +103,6 @@ export default {
         };
     },
 
-    mounted() {
-        chrome.alarms.create('project_pomodoro', {delayInMinutes: 0.05});
-        console.log( 'created!' );
-    },
-
     computed: {
         circleRadius() {
             return (this.$getConfig('TIMER_SIZE') - this.$getConfig('STROKE_WIDTH')) / 2;
@@ -118,19 +114,63 @@ export default {
 
         circleStyles() {
             return {
+                transition: this.isProgressCircleTransition ? 'stroke-dashoffset 0.35s' : '',
                 strokeDashoffset: this.circumference - this.progressCircleFillPercent * this.circumference,
                 strokeDasharray: `${this.circumference} ${this.circumference}`,
             };
         },
     },
 
+    mounted() {
+        chrome.storage.local.get('projectPomodoro', (item) => {
+            if (!item || !item.projectPomodoro || !item.projectPomodoro.currentTimerType) {
+                chrome.storage.local.set({
+                    projectPomodoro: {
+                        currentTimerType: 'work',
+                    },
+                });
+
+                this.currentTimerType = 'work';
+            } else {
+                this.currentTimerType = item.projectPomodoro.currentTimerType;
+            }
+
+            this.initTimerSeconds = this.timerTypes[this.currentTimerType].time;
+
+            chrome.alarms.get('projectPomodoroTimer', (alarm) => {
+                if (alarm && alarm.name === 'projectPomodoroTimer') {
+                    const remainingTimerSeconds = Math.floor((alarm.scheduledTime - Date.now()) / 1000);
+
+                    this.progressCircleFillPercent = (this.initTimerSeconds - remainingTimerSeconds)
+                        / this.initTimerSeconds;
+
+                    this.startTimer();
+                }
+            });
+        });
+    },
+
     methods: {
         startTimer() {
-            this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
-            this.countdown();
+            chrome.alarms.get('projectPomodoroTimer', (alarm) => {
+                if (alarm && alarm.name === 'projectPomodoroTimer') {
+                    this.timerSeconds = Math.floor((alarm.scheduledTime - Date.now()) / 1000);
+                } else {
+                    this.timerSeconds = this.timerTypes[this.currentTimerType].time;
 
-            chrome.alarms.getAll( ( alarms ) => {
-                console.log( alarms );
+                    chrome.alarms.create('projectPomodoroTimer', {
+                        delayInMinutes: this.timerTypes[this.currentTimerType].time / 60,
+                    });
+                }
+
+                chrome.alarms.onAlarm.addListener((triggeredAlarm) => {
+                    if (triggeredAlarm.name === 'projectPomodoroTimer') {
+                        this.stopTimer();
+                    }
+                });
+
+                this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
+                this.startCountdown();
             });
         },
 
@@ -140,29 +180,23 @@ export default {
             this.progressCircleFillPercent = 0;
             this.toggleTimerType();
             clearInterval(this.timerID);
+            chrome.alarms.clear('projectPomodoroTimer');
         },
 
-        // подумать над названием метода, заглаголить
-        countdown() {
+        startCountdown() {
             let now = new Date();
-
-            this.timerSeconds = this.timerTypes[this.currentTimerType].time;
-
             const deadline = this.addSeconds(now, this.timerSeconds);
-            const initTimerSeconds = this.timeDiffInSec(now, deadline);
+            const initTimerSeconds = this.timerTypes[this.currentTimerType].time;
 
-            // заменить на рекурсивный setTimeout
+            setTimeout(() => {
+                this.isProgressCircleTransition = true;
+            }, 100);
+
             this.timerID = setInterval(() => {
                 now = new Date();
-                this.timerSeconds = this.timeDiffInSec(now, deadline);
+                this.timerSeconds = this.countTimeDiffInSec(now, deadline);
 
                 this.progressCircleFillPercent = (initTimerSeconds - this.timerSeconds) / initTimerSeconds;
-
-                if (this.timerSeconds <= 0) {
-                    this.stopTimer();
-                    const audioAlert = new Audio(audioAlertPath);
-                    audioAlert.play();
-                }
             }, 1000);
         },
 
@@ -170,13 +204,20 @@ export default {
             return new Date(date.getTime() + seconds * 1000);
         },
 
-        // подумать над названием метода, заглаголить
-        timeDiffInSec(startDate, endDate) {
+        countTimeDiffInSec(startDate, endDate) {
             return (Date.parse(endDate) - Date.parse(startDate)) / 1000;
         },
 
         toggleTimerType() {
-            this.currentTimerType = this.currentTimerType === 'work' ? 'relax' : 'work';
+            chrome.storage.local.get('projectPomodoro', (item) => {
+                this.currentTimerType = item.projectPomodoro.currentTimerType === 'work' ? 'relax' : 'work';
+
+                chrome.storage.local.set({
+                    projectPomodoro: {
+                        currentTimerType: this.currentTimerType,
+                    },
+                });
+            });
         },
     },
 };
@@ -187,7 +228,6 @@ export default {
     &__progress-circle {
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
-        transition: stroke-dashoffset 0.35s;
     }
 
     &__countdown {

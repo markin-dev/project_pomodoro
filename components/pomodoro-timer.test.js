@@ -1,4 +1,4 @@
-//  изменение констант не должно влиять на тесты
+// изменение констант не должно влиять на тесты
 
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import pomodoroTimer from './pomodoro-timer.vue';

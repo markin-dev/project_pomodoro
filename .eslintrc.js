@@ -4,7 +4,9 @@ module.exports = {
     "es6": true,
     "node": true,
     "jest": true,
-    "webextentions": true,
+  },
+  "globals": {
+    "chrome": "readonly",
   },
   "parserOptions": {
      "parser": "babel-eslint"
