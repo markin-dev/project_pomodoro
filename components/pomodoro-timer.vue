@@ -33,7 +33,7 @@
                 :fill="`${timerTypes[currentTimerType].color}`"
                 :style="{fontSize: `${$getConfig('TIMER_SIZE') * 0.27}px`}"
             >
-                {{ `${formattedTime}` }}
+                {{ timerSeconds | formatTime }}
             </text>
             <circle
                 :r="circleRadius + $getConfig('STROKE_WIDTH') / 2"
@@ -61,6 +61,23 @@ import audioAlertPath from '../assets/alert.mp3';
 export default {
     components: {
         startButton,
+    },
+
+    filters: {
+        formatTime(timerSeconds) {
+            let minutes = parseInt(timerSeconds / 60, 10);
+            let seconds = parseInt(timerSeconds % 60, 10);
+
+            minutes = minutes < 10
+                ? `0${minutes}`
+                : minutes;
+
+            seconds = seconds < 10
+                ? `0${seconds}`
+                : seconds;
+
+            return `${minutes}:${seconds}`;
+        },
     },
 
     data() {
@@ -104,22 +121,6 @@ export default {
                 strokeDashoffset: this.circumference - this.progressCircleFillPercent * this.circumference,
                 strokeDasharray: `${this.circumference} ${this.circumference}`,
             };
-        },
-
-        // попробовать сделать чере вьюшный фильтр
-        formattedTime() {
-            let minutes = parseInt(this.timerSeconds / 60, 10);
-            let seconds = parseInt(this.timerSeconds % 60, 10);
-
-            minutes = minutes < 10
-                ? `0${minutes}`
-                : minutes;
-
-            seconds = seconds < 10
-                ? `0${seconds}`
-                : seconds;
-
-            return `${minutes}:${seconds}`;
         },
     },
 
