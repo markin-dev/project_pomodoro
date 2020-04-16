@@ -169,6 +169,7 @@ export default {
                     }
                 });
 
+                chrome.runtime.sendMessage('startTimer');
                 this.timerStatus = this.$getConfig('TIMER_STATUSES').running;
                 this.startCountdown();
             });
@@ -181,11 +182,10 @@ export default {
             this.toggleTimerType();
             clearInterval(this.timerID);
             chrome.alarms.clear('projectPomodoroTimer');
+            chrome.runtime.sendMessage('stopTimer');
         },
 
         startCountdown() {
-            let now = new Date();
-            const deadline = this.addSeconds(now, this.timerSeconds);
             const initTimerSeconds = this.timerTypes[this.currentTimerType].time;
 
             setTimeout(() => {
@@ -193,11 +193,14 @@ export default {
             }, 100);
 
             this.timerID = setInterval(() => {
-                now = new Date();
-                this.timerSeconds = this.countTimeDiffInSec(now, deadline);
+                chrome.alarms.get('projectPomodoroTimer', (alarm) => {
+                    if (alarm && alarm.name === 'projectPomodoroTimer') {
+                        this.timerSeconds = Math.ceil((alarm.scheduledTime - Date.now()) / 1000);
+                    }
 
-                this.progressCircleFillPercent = (initTimerSeconds - this.timerSeconds) / initTimerSeconds;
-            }, 1000);
+                    this.progressCircleFillPercent = (initTimerSeconds - this.timerSeconds) / initTimerSeconds;
+                });
+            }, 10);
         },
 
         addSeconds(date, seconds) {
