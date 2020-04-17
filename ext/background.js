@@ -21,6 +21,7 @@ function formatBadgeText(seconds) {
 function startCountdownInBadge() {
     clearInterval(intervalID);
 
+    // убрать из компонента vue alarms.get, вместо это слать отсюда месадж с актуальным временем
     intervalID = setInterval(() => {
         chrome.alarms.get('projectPomodoroTimer', (alarm) => {
             if (alarm) {

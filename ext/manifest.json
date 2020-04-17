@@ -1,6 +1,6 @@
 {
     "name": "Pomodoro Timer",
-    "version": "1.0",
+    "version": "1.0.3",
     "description": "Simple pomodoro timer",
     "permissions": [
         "storage",
@@ -16,7 +16,9 @@
         "default_popup": "popup.html"
     },
     "icons": {
-        "128": "favicon.png"
+        "16": "pomodoro16.png",
+        "48": "pomodoro48.png",
+        "128": "pomodoro128.png"
     },
     "manifest_version": 2
 }
