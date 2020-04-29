@@ -16,9 +16,9 @@
         "default_popup": "popup.html"
     },
     "icons": {
-        "16": "pomodoro16.png",
-        "48": "pomodoro48.png",
-        "128": "pomodoro128.png"
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
     },
     "manifest_version": 2
 }

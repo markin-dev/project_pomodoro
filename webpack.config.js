@@ -61,9 +61,9 @@ module.exports = {
         new CopyPlugin([
             { from: join(__dirname, 'ext/manifest.json') },
             { from: join(__dirname, 'ext/popup.html') },
-            { from: join(__dirname, 'assets/pomodoro16.png') },
-            { from: join(__dirname, 'assets/pomodoro48.png') },
-            { from: join(__dirname, 'assets/pomodoro128.png') },
+            { from: join(__dirname, 'ext/img/icon16.png') },
+            { from: join(__dirname, 'ext/img/icon48.png') },
+            { from: join(__dirname, 'ext/img/icon128.png') },
         ]),
     ],
 };
